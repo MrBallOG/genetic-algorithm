@@ -1,5 +1,6 @@
 from typing import Callable
 import matplotlib.pyplot as plt
+from population import Population
 
 
 # x = 2
@@ -27,11 +28,13 @@ def get_fitness_function(function_string: str = None) -> Callable[[int], float]:
 def main() -> None:
     min_val = -2
     max_val = 32
-    offset = 0 - min_val if min_val < 0 else 0
-    bin_len = len(bin(max_val + offset)) - 2
     fitness_function = get_fitness_function("-0.1 * x**2 + 3 * x + 9")
-    print(fitness_function(32))
-    print(min_val, max_val, offset, bin_len, bin(max_val + offset))
+
+    population = Population(max_val, min_val, fitness_function, size=3)
+    print(population.get_max_min_avg_fitness())
+    for i in range(3):
+        ind = population.population[i]
+        print(ind.fitness, ind.chromosome, ind.chromosome_bin_str)
 
 
 if __name__ == "__main__":
