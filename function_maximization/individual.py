@@ -1,5 +1,6 @@
 import random
-from typing import Callable
+from typing import Tuple
+from typing_extensions import Self
 
 
 class Individual:
@@ -41,6 +42,16 @@ class Individual:
 
     def set_fitness(self) -> None:
         self.fitness = max(0.0, Individual.calc_fitness(self.chromosome))
+
+    @classmethod
+    def crossover(cls, ind_1: Self, ind_2: Self) -> Tuple[Self, Self]:
+        crossover_point = random.randrange(1, cls.bin_str_len)
+        ind_1_str = ind_1.chromosome_bin_str
+        ind_2_str = ind_2.chromosome_bin_str
+        bin_str_1 = ind_1_str[:crossover_point] + ind_2_str[crossover_point:]
+        bin_str_2 = ind_2_str[:crossover_point] + ind_1_str[crossover_point:]
+
+        return cls(bin_str_1), cls(bin_str_2)
 
     def mutate(self) -> None:
         index = random.randrange(Individual.bin_str_len)
