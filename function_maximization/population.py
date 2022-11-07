@@ -1,14 +1,11 @@
 import random
-from typing import Callable, List, Tuple
+from typing import List, Tuple
 from individual import Individual
 
 
 class Population:
     def __init__(self, max_val: int = None, min_val: int = None, function_string: str = None, crossover_prob: float = 0.5, mutation_prob: float = 0.02, size: int = 100) -> None:
         Individual.set_class_params(max_val, min_val, function_string)
-        # może nie potrzebne jesli zrobie class methody w individual
-        self.bin_str_len = Individual.bin_str_len
-        ############################################################
         self.crossover_prob = crossover_prob
         self.mutation_prob = mutation_prob
         self.size = size
