@@ -1,5 +1,6 @@
 from typing import Callable
 import matplotlib.pyplot as plt
+from individual import Individual
 from population import Population
 
 
@@ -18,19 +19,12 @@ from population import Population
 # xi = int(s, 2)
 # print(xi)
 
-def get_fitness_function(function_string: str = None) -> Callable[[int], float]:
-    if function_string is None:
-        return lambda x: -0.1 * x**2 + 3 * x + 9
-    else:
-        return lambda x: eval(function_string)
-
 
 def main() -> None:
     min_val = -2
     max_val = 32
-    fitness_function = get_fitness_function("-0.1 * x**2 + 3 * x + 9")
 
-    population = Population(max_val, min_val, fitness_function, size=3)
+    population = Population(function_string="-0.1 * x**2 + 3 * x + 9",  size=3)
     print(population.get_max_min_avg_fitness())
     for i in range(3):
         ind = population.population[i]

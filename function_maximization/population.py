@@ -5,12 +5,12 @@ from individual import Individual
 
 
 class Population:
-    def __init__(self, max_val: int, min_val: int, fitness_function: Callable[[int], float], crossover_prob: float = 0.5, mutation_prob: float = 0.02, size: int = 100) -> None:
-        self.max_val = max_val
-        self.min_val = min_val
-        self.offset = 0 - min_val if min_val < 0 else 0
-        self.bin_str_len = len(bin(max_val + self.offset)) - 2
-        self.fitness_function = fitness_function
+    def __init__(self, max_val: int = None, min_val: int = None, function_string: str = None, crossover_prob: float = 0.5, mutation_prob: float = 0.02, size: int = 100) -> None:
+        Individual.set_class_params(
+            max_val, min_val, function_string)
+        # może nie potrzebne jesli zrobie class methody w individual
+        self.bin_str_len = Individual.bin_str_len
+        ############################################################
         self.crossover_prob = crossover_prob
         self.mutation_prob = mutation_prob
         self.size = size
@@ -19,8 +19,7 @@ class Population:
 
     def _initialize_population(self) -> None:
         for _ in range(self.size):
-            ind = Individual(self.max_val, self.min_val, self.offset,
-                             self.bin_str_len, self.fitness_function)
+            ind = Individual()
             self.population.append(ind)
 
     def get_max_min_avg_fitness(self) -> Tuple[float, float, float]:
