@@ -14,7 +14,7 @@ class Individual:
             self._set_chromosome_from_chromosome_bin_str()
 
     @classmethod
-    def set_class_params(cls, max_val: int, min_val: int, function_string: str = None) -> None:
+    def set_class_vars(cls, max_val: int, min_val: int, function_string: str = None) -> None:
         cls.max_val = max_val if max_val is not None else 32
         cls.min_val = min_val if min_val is not None else -2
         cls.offset = 0 - cls.min_val if cls.min_val < 0 else 0

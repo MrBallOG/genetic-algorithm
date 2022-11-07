@@ -5,7 +5,7 @@ from individual import Individual
 
 class Population:
     def __init__(self, max_val: int = None, min_val: int = None, function_string: str = None, crossover_prob: float = 0.5, mutation_prob: float = 0.01, size: int = 100) -> None:
-        Individual.set_class_params(max_val, min_val, function_string)
+        Individual.set_class_vars(max_val, min_val, function_string)
         self.crossover_prob = crossover_prob
         self.mutation_prob = mutation_prob
         self.size = size
