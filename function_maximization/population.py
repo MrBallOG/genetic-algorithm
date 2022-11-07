@@ -29,7 +29,7 @@ class Population:
             if fitness_max < fitness:
                 fitness_max = fitness
             elif fitness_min > fitness:
-                fitness_max = fitness
+                fitness_min = fitness
 
         return fitness_max, fitness_min, fitness_sum / self.size
 
@@ -45,7 +45,7 @@ class Population:
     def crossover(self) -> None:
         new_population: List[Individual] = []
 
-        while len(self.population) > 2:
+        while len(self.population) >= 2:
             ind_1 = self._remove_random_individual()
             ind_2 = self._remove_random_individual()
 

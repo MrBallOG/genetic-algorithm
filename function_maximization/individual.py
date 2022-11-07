@@ -56,10 +56,13 @@ class Individual:
     def mutate(self) -> None:
         index = random.randrange(Individual.bin_str_len)
         bit = self.chromosome_bin_str[index]
+        bin_str = self.chromosome_bin_str
+        pre = bin_str[:index]
+        suf = bin_str[index + 1:]
 
         if bit == "1":
-            self.chromosome_bin_str[index] = "0"
+            self.chromosome_bin_str = pre + "0" + suf
         else:
-            self.chromosome_bin_str[index] = "1"
+            self.chromosome_bin_str = pre + "1" + suf
 
         self._set_chromosome_from_chromosome_bin_str()
