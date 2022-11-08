@@ -11,14 +11,27 @@ def main() -> None:
     worst = []
     average = []
 
-    # message = "Proszę podać argumnety oddzielone średnikiem w kolejności: \n"
-    # message += "- "
-    # arguments = input(message)
-    # arg_list = arguments.split(";")
-    # print(arg_list)
+    message = "Proszę podać argumenty oddzielone średnikiem w kolejności:\n"
+    message += "-liczba pokoleń\n"
+    message += "-liczba osobników w populacji\n"
+    message += "-prawdopodobieństwo krzyżowania\n"
+    message += "-prawdopodobieństwo mutacji\n"
+    message += "-początek przedziału\n"
+    message += "-koniec przedziału\n"
+    message += "-funkcja dopasowania\n"
+    message += "np.: 50;100;0.5;0.01;-2;32;-0.1 * x**2 + 3 * x + 9\n"
+    message += "Powyższy przykład przedstawia wartości domyślne\n"
+    message += "Argumenty można zostawiać puste, z czego na końcu nie trzeba pamiętać o średnikach\n"
+    message += "np.: 50;;0.5;0.01\n"
+    arg_str = input(message)
+    arg_list = arg_str.split(";")
+    arg_list_default = [100, 0.5, 0.01, -2, 32, "-0.1 * x**2 + 3 * x + 9"]
+    arg_list_final = [None] * 6
+    arg_list_final = arg_list_default
+    print(arg_list)
 
-    population = Population(
-        function_string="-0.1 * x**2 + 3 * x + 9",  size=100)
+    population = Population(arg_list_final[4], arg_list_final[3], arg_list_final[5],
+                            arg_list_final[1], arg_list_final[2], arg_list_final[0], )
     temp = population.get_max_min_avg_fitness()
     best.append(temp[0])
     worst.append(temp[1])

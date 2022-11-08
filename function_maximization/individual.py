@@ -14,16 +14,12 @@ class Individual:
             self._set_chromosome_from_chromosome_bin_str()
 
     @classmethod
-    def set_class_vars(cls, max_val: int, min_val: int, function_string: str = None) -> None:
-        cls.max_val = max_val if max_val is not None else 32
-        cls.min_val = min_val if min_val is not None else -2
+    def set_class_vars(cls, max_val: int, min_val: int, function_string: str) -> None:
+        cls.max_val = max_val
+        cls.min_val = min_val
         cls.offset = 0 - cls.min_val if cls.min_val < 0 else 0
         cls.bin_str_len = len(bin(cls.max_val + cls.offset)) - 2
-
-        if function_string is None:
-            cls.calc_fitness = lambda x: -0.1 * x**2 + 3 * x + 9
-        else:
-            cls.calc_fitness = lambda x: eval(function_string)
+        cls.calc_fitness = lambda x: eval(function_string)
 
     def _draw_chromosome_val(self) -> None:
         self.chromosome = random.randint(
