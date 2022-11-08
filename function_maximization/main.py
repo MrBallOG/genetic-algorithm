@@ -16,35 +16,50 @@ def main() -> None:
     message += "Powyższy przykład przedstawia wartości domyślne\n"
     message += "Argumenty można zostawiać puste, z czego na końcu nie trzeba pamiętać o średnikach\n"
     message += "np.: 50;;0.5;0.01\n"
-    arg_str = input(message)
-    arg_list = arg_str.split(";")
-    print(arg_list)
 
     arg_list_default = [50, 100, 0.5, 0.01, -2, 32, "-0.1 * x**2 + 3 * x + 9"]
     arg_list_final = [None] * 7
-
+    arg_str = input(message)
+    arg_list = arg_str.split(";")
     n = len(arg_list)
+
     try:
-        if n == 1 and arg_list[0] != "":
+        if n > 0 and arg_list[0] != "":
             arg_list_final[0] = int(arg_list[0])
-        if n == 2 and arg_list[1] != "":
-            pass
-        if n == 3 and arg_list[2] != "":
-            pass
-        if n == 4 and arg_list[3] != "":
-            pass
-        if n == 5 and arg_list[4] != "":
-            pass
-        if n == 6 and arg_list[5] != "":
-            pass
-        if n == 7 and arg_list[6] != "":
-            pass
+        if n > 1 and arg_list[1] != "":
+            arg_list_final[1] = int(arg_list[1])
+        if n > 2 and arg_list[2] != "":
+            arg_list_final[2] = float(arg_list[2])
+        if n > 3 and arg_list[3] != "":
+            arg_list_final[3] = float(arg_list[3])
+        if n > 4 and arg_list[4] != "":
+            arg_list_final[4] = int(arg_list[4])
+        if n > 5 and arg_list[5] != "":
+            arg_list_final[5] = int(arg_list[5])
+        if n > 6 and arg_list[6] != "":
+            func_str = arg_list[6]
+            x = arg_list_final[4] if arg_list_final[4] is not None else arg_list_default[4]
+            y = eval(func_str)
+
+            if isinstance(y, float) == False and isinstance(y, int) == False:
+                raise TypeError
     except ValueError:
-        print("oops")
+        print("Błąd w podanych argumentach")
+        return
+    except TypeError:
+        print("Błąd w podanej funkcji")
+        return
+    except NameError:
+        print("Błąd w podanej funkcji")
+        return
 
     for i in range(len(arg_list_default)):
         if arg_list_final[i] is None:
             arg_list_final[i] = arg_list_default[i]
+
+    print(arg_list)
+    print(arg_list_final)
+    print(arg_list_default)
 
     generation_count = arg_list_final[0]
     population = Population(arg_list_final[5], arg_list_final[4], arg_list_final[6],

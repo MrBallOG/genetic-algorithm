@@ -1,5 +1,5 @@
 import random
-from typing import Tuple
+from typing import Tuple, Callable
 from typing_extensions import Self
 
 
@@ -19,7 +19,8 @@ class Individual:
         cls.min_val = min_val
         cls.offset = 0 - cls.min_val if cls.min_val < 0 else 0
         cls.bin_str_len = len(bin(cls.max_val + cls.offset)) - 2
-        cls.calc_fitness = lambda x: eval(function_string)
+        cls.calc_fitness: Callable[[int],
+                                   float] = lambda x: eval(function_string)
 
     def _draw_chromosome_val(self) -> None:
         self.chromosome = random.randint(
