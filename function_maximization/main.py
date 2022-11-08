@@ -59,13 +59,9 @@ def main() -> None:
         if arg_list_final[i] is None:
             arg_list_final[i] = arg_list_default[i]
 
-    print(arg_list)
-    print(arg_list_final)
-    print(arg_list_default)
-
     generation_count = arg_list_final[0]
     population = Population(arg_list_final[5], arg_list_final[4], arg_list_final[6],
-                            arg_list_final[2], arg_list_final[3], arg_list_final[1], )
+                            arg_list_final[2], arg_list_final[3], arg_list_final[1])
 
     best = []
     worst = []
