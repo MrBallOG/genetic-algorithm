@@ -4,13 +4,6 @@ from population import Population
 
 
 def main() -> None:
-    min_val = -2
-    max_val = 32
-    generation_count = 50
-    best = []
-    worst = []
-    average = []
-
     message = "Proszę podać argumenty oddzielone średnikiem w kolejności:\n"
     message += "-liczba pokoleń\n"
     message += "-liczba osobników w populacji\n"
@@ -25,13 +18,41 @@ def main() -> None:
     message += "np.: 50;;0.5;0.01\n"
     arg_str = input(message)
     arg_list = arg_str.split(";")
-    arg_list_default = [100, 0.5, 0.01, -2, 32, "-0.1 * x**2 + 3 * x + 9"]
-    arg_list_final = [None] * 6
-    arg_list_final = arg_list_default
     print(arg_list)
 
-    population = Population(arg_list_final[4], arg_list_final[3], arg_list_final[5],
-                            arg_list_final[1], arg_list_final[2], arg_list_final[0], )
+    arg_list_default = [50, 100, 0.5, 0.01, -2, 32, "-0.1 * x**2 + 3 * x + 9"]
+    arg_list_final = [None] * 7
+
+    n = len(arg_list)
+    try:
+        if n == 1 and arg_list[0] != "":
+            arg_list_final[0] = int(arg_list[0])
+        if n == 2 and arg_list[1] != "":
+            pass
+        if n == 3 and arg_list[2] != "":
+            pass
+        if n == 4 and arg_list[3] != "":
+            pass
+        if n == 5 and arg_list[4] != "":
+            pass
+        if n == 6 and arg_list[5] != "":
+            pass
+        if n == 7 and arg_list[6] != "":
+            pass
+    except ValueError:
+        print("oops")
+
+    for i in range(len(arg_list_default)):
+        if arg_list_final[i] is None:
+            arg_list_final[i] = arg_list_default[i]
+
+    generation_count = arg_list_final[0]
+    population = Population(arg_list_final[5], arg_list_final[4], arg_list_final[6],
+                            arg_list_final[2], arg_list_final[3], arg_list_final[1], )
+
+    best = []
+    worst = []
+    average = []
     temp = population.get_max_min_avg_fitness()
     best.append(temp[0])
     worst.append(temp[1])
