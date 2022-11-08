@@ -43,6 +43,8 @@ def main() -> None:
 
             if isinstance(y, float) == False and isinstance(y, int) == False:
                 raise TypeError
+
+            arg_list_final[6] = arg_list[6]
     except ValueError:
         print("Błąd w podanych argumentach")
         return
