@@ -1,44 +1,48 @@
 import random
-from typing import Tuple, Callable
+from typing import Tuple, List
 from typing_extensions import Self
+from gene import Gene
 
 
 class Individual:
-    def __init__(self, chromosome_bin_str: str = None) -> None:
-        if chromosome_bin_str is None:
+    def __init__(self, chromosome: List[Gene] = None) -> None:
+        if chromosome is None:
             self._draw_chromosome_val()
-            self._set_chromosome_bin_str_from_chromosome()
-            self.set_fitness()
         else:
-            self.chromosome_bin_str = chromosome_bin_str
-            self._set_chromosome_from_chromosome_bin_str()
+            self.chromosome = chromosome
 
     @classmethod
-    def set_class_vars(cls, max_val: int, min_val: int, function_string: str) -> None:
-        cls.max_val = max_val
-        cls.min_val = min_val
-        cls.offset = 0 - cls.min_val if cls.min_val < 0 else 0
-        cls.bin_str_len = len(bin(cls.max_val + cls.offset)) - 2
-        cls.calc_fitness: Callable[[int],
-                                   float] = lambda x: eval(function_string)
+    def set_class_vars(cls, default_chromosome: List[Gene]) -> None:
+        cls.default_chromosome = default_chromosome
+        cls.chromosome_len = len(default_chromosome)
+        cls._calc_all_dists()
+
+    @classmethod
+    def _calc_all_dists(cls) -> None:
+        dist_dict = {}
+        max_dist = 0
+
+        for i in range(cls.chromosome_len):
+            for j in range(cls.chromosome_len):
+                if i == j or j < i:
+                    continue
+
+                g1 = cls.default_chromosome[i]
+                g2 = cls.default_chromosome[j]
+
+                dist = g1.calc_distance(g2)
+                name = ''.join(sorted([g1.name, g2.name]))
+                dist_dict[name] = dist
+
+                if dist > max_dist:
+                    max_dist = dist
+
+        cls.dist_dict = dist_dict
+        cls.fitness_const = max_dist * cls.chromosome_len
 
     def _draw_chromosome_val(self) -> None:
-        self.chromosome = random.randint(
-            Individual.min_val, Individual.max_val)
-
-    def _set_chromosome_from_chromosome_bin_str(self) -> None:
-        chromosome = int(self.chromosome_bin_str, 2) - Individual.offset
-        self.chromosome = max(Individual.min_val, min(
-            Individual.max_val, chromosome))
-
-        if self.chromosome != chromosome:
-            self._set_chromosome_bin_str_from_chromosome()
-
-    def _set_chromosome_bin_str_from_chromosome(self) -> None:
-        self.chromosome_bin_str = f"{self.chromosome + Individual.offset:0{Individual.bin_str_len}b}"
-
-    def set_fitness(self) -> None:
-        self.fitness = max(0.0, Individual.calc_fitness(self.chromosome))
+        self.chromosome = Individual.default_chromosome.copy()
+        random.shuffle(self.chromosome)
 
     @classmethod
     def crossover(cls, ind_1: Self, ind_2: Self) -> Tuple[Self, Self]:
