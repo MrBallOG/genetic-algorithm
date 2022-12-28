@@ -13,12 +13,7 @@ class Individual:
             self.chromosome = chromosome
 
     def __str__(self) -> str:
-        chromosome = ""
-
-        for i in range(Individual.chromosome_len):
-            chromosome += str(self.chromosome[i]) + " "
-
-        return chromosome + str(self.fitness)
+        return "".join([str(gene) for gene in self.chromosome])
 
     @classmethod
     def set_class_vars(cls, default_chromosome: List[Gene]) -> None:

@@ -5,30 +5,6 @@ from gene import Gene
 import re
 import ast
 
-# x = [["A", 1, 2], ["B", 11, 4], ["C", 10, 5],
-#      ["D", 3, 7], ["E", 4, 9], ["F", 5, 10]]
-# y = [Gene(a[0], a[1], a[2]) for a in x]
-# Individual.set_class_vars(y)
-# print(Individual.dist_dict)
-# i1 = Individual()
-# i2 = Individual()
-
-
-# def pch(i: List[Gene]):
-#     text = ''
-#     for j in range(len(i)):
-#         text += i[j].name + "(" + str(i[j].x) + str(i[j].y) + ")"
-
-#     print(text)
-
-
-# pch(i1.chromosome)
-# pch(i2.chromosome)
-# i1, i2 = i1.crossover(i1, i2)
-# print("mutacja")
-# i2.mutate()
-# pch(i2.chromosome)
-
 
 def main() -> None:
     message = "Proszę podać argumenty oddzielone średnikiem w kolejności:\n"
@@ -125,27 +101,60 @@ def main() -> None:
     # print(best_individual)
     # print(worst_individual)
 
+    x = [i + 1 for i in range(generation_count)]
+    plt.figure(figsize=(14, 8), dpi=75)
+    plt.plot(x, best, "o-", label="maksymalne przystosowanie")
+    plt.plot(x, average, "o-",  label="średnie przystosowanie")
+    plt.plot(x, worst, "o-",  label="minimalne przystosowanie")
+    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+    plt.xlabel("Pokolenie")
+    plt.ylabel("Przystosowanie")
+    plt.title("Przystosowanie osobników w kolejnych pokoleniach")
+    plt.tight_layout()
 
-#     x = [i + 1 for i in range(generation_count)]
-#     plt.figure(figsize=(14, 8), dpi=75)
-#     plt.plot(x, best, "o-", label="maksymalne przystosowanie")
-#     plt.plot(x, average, "o-",  label="średnie przystosowanie")
-#     plt.plot(x, worst, "o-",  label="minimalne przystosowanie")
-#     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-#     plt.xlabel("Pokolenie")
-#     plt.ylabel("Przystosowanie")
-#     plt.title("Przystosowanie osobników w kolejnych pokoleniach")
-#     plt.tight_layout()
+    x = [gene.x for gene in best_individual.chromosome]
+    y = [gene.y for gene in best_individual.chromosome]
+    annotations = [gene.name for gene in best_individual.chromosome]
+    plt.figure(figsize=(14, 8), dpi=75)
+    plt.plot(x, y, "o-")
+    plt.xlabel("x")
+    plt.ylabel("y")
+    plt.title(
+        f"Najkrótsza droga {best_individual} o długości {Individual.fitness_const - best_individual.fitness:.3f}")
+    plt.grid(visible=True)
+    plt.xlim(0, 11)
+    plt.ylim(0, 11)
+    ax = plt.gca()
+    ax.set_aspect('equal', adjustable='box')
+    ax.set_xticks(range(11))
+    ax.set_yticks(range(11))
+    for i, annotation in enumerate(annotations):
+        ax.annotate(annotation, (x[i], y[i]), bbox=dict(
+            boxstyle='round,pad=0.5', fc='yellow'))
+    plt.tight_layout()
 
-#     x = [i for i in range(Individual.min_val, Individual.max_val + 1)]
-#     y = [Individual.calc_fitness(x_val) for x_val in x]
-#     plt.figure(figsize=(14, 8), dpi=75)
-#     plt.plot(x, y, "o-")
-#     plt.xlabel("Wartość osobnika")
-#     plt.ylabel("Przystosowanie")
-#     plt.title("Przystosowanie dla kolejnych wartości osobników")
-#     plt.tight_layout()
-#     plt.show()
+    x = [gene.x for gene in worst_individual.chromosome]
+    y = [gene.y for gene in worst_individual.chromosome]
+    annotations = [gene.name for gene in worst_individual.chromosome]
+    plt.figure(figsize=(14, 8), dpi=75)
+    plt.plot(x, y, "o-")
+    plt.xlabel("x")
+    plt.ylabel("y")
+    plt.title(
+        f"Najdłuższa droga {worst_individual} o długości {Individual.fitness_const - worst_individual.fitness:.3f}")
+    plt.grid(visible=True)
+    plt.xlim(0, 11)
+    plt.ylim(0, 11)
+    ax = plt.gca()
+    ax.set_aspect('equal', adjustable='box')
+    ax.set_xticks(range(11))
+    ax.set_yticks(range(11))
+    for i, annotation in enumerate(annotations):
+        ax.annotate(annotation, (x[i], y[i]), bbox=dict(
+            boxstyle='round,pad=0.5', fc='yellow'))
+    plt.tight_layout()
+    plt.show()
+
 
 if __name__ == "__main__":
     main()

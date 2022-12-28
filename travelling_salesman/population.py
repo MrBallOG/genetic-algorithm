@@ -45,13 +45,16 @@ class Population:
         if self.min_path_individual is None or self.min_path_individual.fitness < fitness_max:
             self.min_path_individual = self.population[index_max]
 
-        self.best_fitness_per_gen.append(fitness_max)
-        self.worst_fitness_per_gen.append(fitness_min)
-        self.average_fitness_per_gen.append(fitness_sum / self.size)
+        self.best_fitness_per_gen.append(
+            Individual.fitness_const - fitness_max)
+        self.worst_fitness_per_gen.append(
+            Individual.fitness_const - fitness_min)
+        self.average_fitness_per_gen.append(
+            Individual.fitness_const - fitness_sum / self.size)
 
     def select_using_roulette_selection(self) -> None:
         weights: List[float] = [
-            self.population[i].fitness for i in range(self.size)]
+            (self.population[i].fitness / 2) ** 5 for i in range(self.size)]
         self.population = random.choices(
             self.population, weights=weights, k=self.size)
 
@@ -65,7 +68,9 @@ class Population:
             ind_1 = self._remove_random_individual()
             ind_2 = self._remove_random_individual()
 
-            ind_1, ind_2 = Individual.crossover(ind_1, ind_2)
+            if 0.5 > random.random():
+                ind_1, ind_2 = Individual.crossover(ind_1, ind_2)
+            # ind_1, ind_2 = Individual.crossover(ind_1, ind_2)
 
             new_population.append(ind_1)
             new_population.append(ind_2)
