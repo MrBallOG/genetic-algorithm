@@ -12,6 +12,14 @@ class Individual:
         else:
             self.chromosome = chromosome
 
+    def __str__(self) -> str:
+        chromosome = ""
+
+        for i in range(Individual.chromosome_len):
+            chromosome += str(self.chromosome[i]) + " "
+
+        return chromosome + str(self.fitness)
+
     @classmethod
     def set_class_vars(cls, default_chromosome: List[Gene]) -> None:
         cls.default_chromosome = default_chromosome

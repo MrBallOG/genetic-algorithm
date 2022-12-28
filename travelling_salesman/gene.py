@@ -8,5 +8,8 @@ class Gene:
         self.x = x
         self.y = y
 
+    def __str__(self) -> str:
+        return f"{self.name}({self.x},{self.y})"
+
     def calc_distance(self, gene: Self) -> float:
         return math.sqrt((self.x - gene.x) ** 2 + (self.y - gene.y) ** 2)

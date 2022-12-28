@@ -39,7 +39,7 @@ def main() -> None:
     message += "np.: 50;100;0.01;A(4,4), B(1,1), C(8,9), D(2,10), E(4,10), F(6,9), G(5,6), H(1, 8), I(8,7), J(9,4)\n"
     message += "Powyższy przykład przedstawia wartości domyślne\n"
     message += "Argumenty można zostawiać puste, z czego na końcu nie trzeba pamiętać o średnikach\n"
-    message += "np.: 50;;0.5;0.01\n"
+    message += "np.: 50;;0.01\n"
 
     arg_list_default = [
         50, 100, 0.01, "A(4,4), B(1,1), C(8,9), D(2,10), E(4,10), F(6,9), G(5,6), H(1, 8), I(8,7), J(9,4)"]
@@ -98,31 +98,33 @@ def main() -> None:
         print("Błąd we współrzędnych miast")
         return
 
-#     for i in range(len(arg_list_default)):
-#         if arg_list_final[i] is None:
-#             arg_list_final[i] = arg_list_default[i]
+    for i in range(len(arg_list_default)):
+        if arg_list_final[i] is None:
+            arg_list_final[i] = arg_list_default[i]
 
-#     generation_count = arg_list_final[0]
-#     population = Population(arg_list_final[5], arg_list_final[4], arg_list_final[6],
-#                             arg_list_final[2], arg_list_final[3], arg_list_final[1])
+    generation_count = arg_list_final[0]
+    population = Population(
+        arg_list_final[1], arg_list_final[2], arg_list_final[3])
+    population.save_fitness_and_individual_stats()
 
-#     best = []
-#     worst = []
-#     average = []
-#     temp = population.get_max_min_avg_fitness()
-#     best.append(temp[0])
-#     worst.append(temp[1])
-#     average.append(temp[2])
+    for _ in range(generation_count - 1):
+        population.select_using_roulette_selection()
+        population.crossover()
+        population.mutate()
+        population.save_fitness_and_individual_stats()
 
-#     for _ in range(generation_count - 1):
-#         population.select_using_roulette_selection()
-#         population.crossover()
-#         population.mutate()
+    best = population.best_fitness_per_gen
+    worst = population.worst_fitness_per_gen
+    average = population.average_fitness_per_gen
+    best_individual = population.min_path_individual
+    worst_individual = population.max_path_individual
 
-#         temp = population.get_max_min_avg_fitness()
-#         best.append(temp[0])
-#         worst.append(temp[1])
-#         average.append(temp[2])
+    # print(best)
+    # print(worst)
+    # print(average)
+    # print(best_individual)
+    # print(worst_individual)
+
 
 #     x = [i + 1 for i in range(generation_count)]
 #     plt.figure(figsize=(14, 8), dpi=75)
@@ -144,7 +146,6 @@ def main() -> None:
 #     plt.title("Przystosowanie dla kolejnych wartości osobników")
 #     plt.tight_layout()
 #     plt.show()
-
 
 if __name__ == "__main__":
     main()

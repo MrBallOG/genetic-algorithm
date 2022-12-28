@@ -1,25 +1,28 @@
 import random
-from typing import List, Tuple
+from typing import List
 from individual import Individual
 from gene import Gene
 
 
 class Population:
-    def __init__(self, default_chromosome: List[Gene], mutation_prob: float, size: int) -> None:
+    def __init__(self, size: int, mutation_prob: float, default_chromosome: List[Gene]) -> None:
         Individual.set_class_vars(default_chromosome)
-        self.mutation_prob = mutation_prob
         self.size = size
+        self.mutation_prob = mutation_prob
         self.population: List[Individual] = []
         self._initialize_population()
-        self.max_path_individual = None
-        self.min_path_individual = None
+        self.max_path_individual: Individual = None
+        self.min_path_individual: Individual = None
+        self.best_fitness_per_gen = []
+        self.worst_fitness_per_gen = []
+        self.average_fitness_per_gen = []
 
     def _initialize_population(self) -> None:
         for _ in range(self.size):
             ind = Individual()
             self.population.append(ind)
 
-    def get_max_min_avg_fitness(self) -> Tuple[float, float, float]:
+    def save_fitness_and_individual_stats(self) -> None:
         fitness_sum = self.population[0].fitness
         fitness_max = fitness_sum
         fitness_min = fitness_sum
@@ -42,7 +45,9 @@ class Population:
         if self.min_path_individual is None or self.min_path_individual.fitness < fitness_max:
             self.min_path_individual = self.population[index_max]
 
-        return fitness_max, fitness_min, fitness_sum / self.size
+        self.best_fitness_per_gen.append(fitness_max)
+        self.worst_fitness_per_gen.append(fitness_min)
+        self.average_fitness_per_gen.append(fitness_sum / self.size)
 
     def select_using_roulette_selection(self) -> None:
         weights: List[float] = [
