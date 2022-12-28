@@ -1,16 +1,18 @@
 import random
 from typing import List, Tuple
 from individual import Individual
+from gene import Gene
 
 
 class Population:
-    def __init__(self, max_val: int, min_val: int, function_string: str, crossover_prob: float, mutation_prob: float, size: int) -> None:
-        Individual.set_class_vars(max_val, min_val, function_string)
-        self.crossover_prob = crossover_prob
+    def __init__(self, default_chromosome: List[Gene], mutation_prob: float, size: int) -> None:
+        Individual.set_class_vars(default_chromosome)
         self.mutation_prob = mutation_prob
         self.size = size
         self.population: List[Individual] = []
         self._initialize_population()
+        self.max_path_individual = None
+        self.min_path_individual = None
 
     def _initialize_population(self) -> None:
         for _ in range(self.size):
@@ -21,6 +23,8 @@ class Population:
         fitness_sum = self.population[0].fitness
         fitness_max = fitness_sum
         fitness_min = fitness_sum
+        index_max = 0
+        index_min = 0
 
         for i in range(1, self.size):
             fitness = self.population[i].fitness
@@ -28,8 +32,15 @@ class Population:
 
             if fitness_max < fitness:
                 fitness_max = fitness
+                index_max = i
             elif fitness_min > fitness:
                 fitness_min = fitness
+                index_min = i
+
+        if self.max_path_individual is None or self.max_path_individual.fitness > fitness_min:
+            self.max_path_individual = self.population[index_min]
+        if self.min_path_individual is None or self.min_path_individual.fitness < fitness_max:
+            self.min_path_individual = self.population[index_max]
 
         return fitness_max, fitness_min, fitness_sum / self.size
 
@@ -49,8 +60,7 @@ class Population:
             ind_1 = self._remove_random_individual()
             ind_2 = self._remove_random_individual()
 
-            if self.crossover_prob > random.random():
-                ind_1, ind_2 = Individual.crossover(ind_1, ind_2)
+            ind_1, ind_2 = Individual.crossover(ind_1, ind_2)
 
             new_population.append(ind_1)
             new_population.append(ind_2)

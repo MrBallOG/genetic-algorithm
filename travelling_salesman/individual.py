@@ -51,7 +51,7 @@ class Individual:
         for i in range(1, Individual.chromosome_len):
             gene_1 = self.chromosome[i - 1]
             gene_2 = self.chromosome[i]
-            name = ''.join(sorted([gene_1.name, gene_2.name]))
+            name = "".join(sorted([gene_1.name, gene_2.name]))
 
             dist += Individual.dist_dict[name]
 
