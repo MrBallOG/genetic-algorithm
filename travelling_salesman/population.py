@@ -13,48 +13,45 @@ class Population:
         self._initialize_population()
         self.max_path_individual: Individual = None
         self.min_path_individual: Individual = None
-        self.best_fitness_per_gen = []
-        self.worst_fitness_per_gen = []
-        self.average_fitness_per_gen = []
+        self.best_dist_per_gen = []
+        self.worst_dist_per_gen = []
+        self.average_dist_per_gen = []
 
     def _initialize_population(self) -> None:
         for _ in range(self.size):
             ind = Individual()
             self.population.append(ind)
 
-    def save_fitness_and_individual_stats(self) -> None:
-        fitness_sum = self.population[0].fitness
-        fitness_max = fitness_sum
-        fitness_min = fitness_sum
+    def save_dist_and_individual_stats(self) -> None:
+        dist_sum = self.population[0].dist
+        dist_max = dist_sum
+        dist_min = dist_sum
         index_max = 0
         index_min = 0
 
         for i in range(1, self.size):
-            fitness = self.population[i].fitness
-            fitness_sum += fitness
+            dist = self.population[i].dist
+            dist_sum += dist
 
-            if fitness_max < fitness:
-                fitness_max = fitness
+            if dist_max < dist:
+                dist_max = dist
                 index_max = i
-            elif fitness_min > fitness:
-                fitness_min = fitness
+            elif dist_min > dist:
+                dist_min = dist
                 index_min = i
 
-        if self.max_path_individual is None or self.max_path_individual.fitness > fitness_min:
-            self.max_path_individual = self.population[index_min]
-        if self.min_path_individual is None or self.min_path_individual.fitness < fitness_max:
-            self.min_path_individual = self.population[index_max]
+        if self.max_path_individual is None or self.max_path_individual.dist < dist_max:
+            self.max_path_individual = self.population[index_max]
+        if self.min_path_individual is None or self.min_path_individual.dist > dist_min:
+            self.min_path_individual = self.population[index_min]
 
-        self.best_fitness_per_gen.append(
-            Individual.fitness_const - fitness_max)
-        self.worst_fitness_per_gen.append(
-            Individual.fitness_const - fitness_min)
-        self.average_fitness_per_gen.append(
-            Individual.fitness_const - fitness_sum / self.size)
+        self.best_dist_per_gen.append(dist_min)
+        self.worst_dist_per_gen.append(dist_max)
+        self.average_dist_per_gen.append(dist_sum / self.size)
 
     def select_using_roulette_selection(self) -> None:
         weights: List[float] = [
-            (self.population[i].fitness / 2) ** 5 for i in range(self.size)]
+            self.population[i].fitness for i in range(self.size)]
         self.population = random.choices(
             self.population, weights=weights, k=self.size)
 
@@ -87,4 +84,4 @@ class Population:
             if self.mutation_prob > random.random():
                 ind.mutate()
 
-            ind.set_fitness()
+            ind.set_dist_and_fitness()

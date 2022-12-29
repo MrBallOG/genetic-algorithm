@@ -81,35 +81,29 @@ def main() -> None:
     generation_count = arg_list_final[0]
     population = Population(
         arg_list_final[1], arg_list_final[2], arg_list_final[3])
-    population.save_fitness_and_individual_stats()
+    population.save_dist_and_individual_stats()
 
     for _ in range(generation_count - 1):
         population.select_using_roulette_selection()
         population.crossover()
         population.mutate()
-        population.save_fitness_and_individual_stats()
+        population.save_dist_and_individual_stats()
 
-    best = population.best_fitness_per_gen
-    worst = population.worst_fitness_per_gen
-    average = population.average_fitness_per_gen
+    best = population.best_dist_per_gen
+    worst = population.worst_dist_per_gen
+    average = population.average_dist_per_gen
     best_individual = population.min_path_individual
     worst_individual = population.max_path_individual
 
-    # print(best)
-    # print(worst)
-    # print(average)
-    # print(best_individual)
-    # print(worst_individual)
-
     x = [i + 1 for i in range(generation_count)]
     plt.figure(figsize=(14, 8), dpi=75)
-    plt.plot(x, best, "o-", label="maksymalne przystosowanie")
-    plt.plot(x, average, "o-",  label="średnie przystosowanie")
-    plt.plot(x, worst, "o-",  label="minimalne przystosowanie")
+    plt.plot(x, best, "o-", label="minimalna droga")
+    plt.plot(x, average, "o-",  label="średnia droga")
+    plt.plot(x, worst, "o-",  label="maksymalna droga")
     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
     plt.xlabel("Pokolenie")
-    plt.ylabel("Przystosowanie")
-    plt.title("Przystosowanie osobników w kolejnych pokoleniach")
+    plt.ylabel("Długość")
+    plt.title("Długość drogi w kolejnych pokoleniach")
     plt.tight_layout()
 
     x = [gene.x for gene in best_individual.chromosome]
@@ -120,7 +114,7 @@ def main() -> None:
     plt.xlabel("x")
     plt.ylabel("y")
     plt.title(
-        f"Najkrótsza droga {best_individual} o długości {Individual.fitness_const - best_individual.fitness:.3f}")
+        f"Najkrótsza droga {best_individual} o długości {best_individual.dist:.3f}")
     plt.grid(visible=True)
     plt.xlim(0, 11)
     plt.ylim(0, 11)
@@ -141,7 +135,7 @@ def main() -> None:
     plt.xlabel("x")
     plt.ylabel("y")
     plt.title(
-        f"Najdłuższa droga {worst_individual} o długości {Individual.fitness_const - worst_individual.fitness:.3f}")
+        f"Najdłuższa droga {worst_individual} o długości {worst_individual.dist:.3f}")
     plt.grid(visible=True)
     plt.xlim(0, 11)
     plt.ylim(0, 11)

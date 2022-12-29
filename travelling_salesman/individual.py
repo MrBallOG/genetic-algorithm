@@ -8,7 +8,7 @@ class Individual:
     def __init__(self, chromosome: List[Gene] = None) -> None:
         if chromosome is None:
             self._draw_chromosome_val()
-            self.set_fitness()
+            self.set_dist_and_fitness()
         else:
             self.chromosome = chromosome
 
@@ -48,7 +48,7 @@ class Individual:
         self.chromosome = Individual.default_chromosome.copy()
         random.shuffle(self.chromosome)
 
-    def set_fitness(self) -> None:
+    def set_dist_and_fitness(self) -> None:
         dist = 0
 
         for i in range(1, Individual.chromosome_len):
@@ -58,6 +58,7 @@ class Individual:
 
             dist += Individual.dist_dict[name]
 
+        self.dist = dist
         self.fitness = Individual.fitness_const - dist
 
     @classmethod
