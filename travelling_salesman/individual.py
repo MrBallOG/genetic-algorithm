@@ -59,7 +59,7 @@ class Individual:
             dist += Individual.dist_dict[name]
 
         self.dist = dist
-        self.fitness = Individual.fitness_const - dist
+        self.fitness = (1 / dist) ** 4
 
     @classmethod
     def crossover(cls, ind_1: Self, ind_2: Self) -> Tuple[Self, Self]:

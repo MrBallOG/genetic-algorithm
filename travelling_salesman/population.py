@@ -65,9 +65,7 @@ class Population:
             ind_1 = self._remove_random_individual()
             ind_2 = self._remove_random_individual()
 
-            if 0.5 > random.random():
-                ind_1, ind_2 = Individual.crossover(ind_1, ind_2)
-            # ind_1, ind_2 = Individual.crossover(ind_1, ind_2)
+            ind_1, ind_2 = Individual.crossover(ind_1, ind_2)
 
             new_population.append(ind_1)
             new_population.append(ind_2)
