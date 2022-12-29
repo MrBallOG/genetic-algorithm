@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-from individual import Individual
 from population import Population
 from gene import Gene
 import re
