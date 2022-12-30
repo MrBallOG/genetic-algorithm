@@ -19,10 +19,10 @@ class Individual:
     def set_class_vars(cls, default_chromosome: List[Gene]) -> None:
         cls.default_chromosome = default_chromosome
         cls.chromosome_len = len(default_chromosome)
-        cls._calc_all_dists_and_fitness_const()
+        cls._calc_all_dists()
 
     @classmethod
-    def _calc_all_dists_and_fitness_const(cls) -> None:
+    def _calc_all_dists(cls) -> None:
         dist_dict = {}
         max_dist = 0
 
@@ -42,7 +42,6 @@ class Individual:
                     max_dist = dist
 
         cls.dist_dict = dist_dict
-        cls.fitness_const = max_dist * cls.chromosome_len
 
     def _draw_chromosome_val(self) -> None:
         self.chromosome = Individual.default_chromosome.copy()
