@@ -24,7 +24,6 @@ class Individual:
     @classmethod
     def _calc_all_dists(cls) -> None:
         dist_dict = {}
-        max_dist = 0
 
         for i in range(cls.chromosome_len):
             for j in range(cls.chromosome_len):
@@ -37,9 +36,6 @@ class Individual:
                 dist = g1.calc_distance(g2)
                 name = ''.join(sorted([g1.name, g2.name]))
                 dist_dict[name] = dist
-
-                if dist > max_dist:
-                    max_dist = dist
 
         cls.dist_dict = dist_dict
 
