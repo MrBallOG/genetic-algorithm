@@ -11,13 +11,13 @@ def main() -> None:
     message += "-liczba osobników w populacji\n"
     message += "-prawdopodobieństwo mutacji\n"
     message += "-współrzędne miast\n"
-    message += "np.: 50;100;0.01;A(4,4), B(1,1), C(8,9), D(2,10), E(4,10), F(6,9), G(5,6), H(1, 8), I(8,7), J(9,4)\n"
+    message += "np.: 50;100;0.01;A(4,4), B(1,1), C(8,9), D(2,10), E(4,10), F(6,9), G(5,6), H(1,8), I(8,7), J(9,4)\n"
     message += "Powyższy przykład przedstawia wartości domyślne\n"
     message += "Argumenty można zostawiać puste, z czego na końcu nie trzeba pamiętać o średnikach\n"
     message += "np.: 50;;0.01\n"
 
     arg_list_default = [
-        50, 100, 0.01, "A(4,4), B(1,1), C(8,9), D(2,10), E(4,10), F(6,9), G(5,6), H(1, 8), I(8,7), J(9,4)"]
+        50, 100, 0.01, "A(4,4), B(1,1), C(8,9), D(2,10), E(4,10), F(6,9), G(5,6), H(1,8), I(8,7), J(9,4)"]
     arg_list_final = [None] * 4
     arg_str = input(message)
     arg_list = arg_str.split(";")
